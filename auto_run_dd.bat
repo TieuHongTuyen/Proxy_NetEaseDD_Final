@@ -31,9 +31,9 @@ if %errorLevel% equ 0 (
     echo [INFO] Proxy chưa chạy, đang khởi động...
     set PROXY_ALREADY_RUNNING=0
     
-    REM Khởi động proxy
+    REM Khởi động proxy (không ghi log)
     cd /d "%SCRIPT_DIR%"
-    start /B pythonw -u dd_proxy.py > dd_proxy_output.log 2>&1
+    start /B pythonw -u dd_proxy.py > nul 2>&1
     
     REM Đợi proxy khởi động
     echo Đang đợi proxy khởi động...
@@ -43,7 +43,6 @@ if %errorLevel% equ 0 (
     netstat -ano | findstr ":8888" | findstr "LISTENING" >nul 2>&1
     if %errorLevel% neq 0 (
         echo [ERROR] Không thể khởi động proxy!
-        echo Vui lòng kiểm tra file dd_proxy_output.log
         pause
         exit /b 1
     )

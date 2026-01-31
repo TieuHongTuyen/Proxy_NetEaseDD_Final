@@ -28,13 +28,11 @@ class DDProxyAddon:
 
 def main():
     """Khởi động proxy server"""
-    # Cấu hình logging
-    log_file = os.path.join(os.path.dirname(__file__), "dd_proxy.log")
+    # Cấu hình logging - Chỉ ghi ra màn hình console, không ghi file
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler(log_file, encoding='utf-8'),
             logging.StreamHandler(sys.stdout)
         ]
     )

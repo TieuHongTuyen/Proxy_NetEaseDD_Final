@@ -14,8 +14,8 @@ REM Khởi động proxy server
 echo [1/3] Đang khởi động DD Proxy Server...
 cd /d "%~dp0"
 
-REM Chạy proxy ở background
-start /B pythonw -u dd_proxy.py > dd_proxy_output.log 2>&1
+REM Chạy proxy ở background (không ghi log)
+start /B pythonw -u dd_proxy.py > nul 2>&1
 
 REM Đợi một chút để process khởi động
 timeout /t 1 /nobreak >nul
@@ -36,7 +36,6 @@ if %errorLevel% equ 0 goto proxy_started
 set /a RETRY_COUNT+=1
 if %RETRY_COUNT% geq 20 (
     echo [ERROR] Không thể khởi động proxy sau 10 giây!
-    echo Vui lòng kiểm tra file dd_proxy_output.log để xem lỗi
     if exist dd_proxy.pid del dd_proxy.pid
     pause
     exit /b 1
@@ -73,7 +72,6 @@ echo      DD PROXY ĐÃ SẴN SÀNG!
 echo ========================================
 echo.
 echo Proxy đang chạy tại: 127.0.0.1:8888
-echo Log file: %~dp0dd_proxy.log
 echo.
 echo Bây giờ bạn có thể mở phần mềm DD
 echo.
