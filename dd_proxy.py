@@ -52,19 +52,25 @@ def main():
             listen_port=8888,
             ssl_insecure=True,
         )
-        m = DumpMaster(opts, with_termlog=False, with_dumper=False)
-        m.addons.add(DDProxyAddon())
         
         try:
+            m = DumpMaster(opts, with_termlog=False, with_dumper=False)
+            m.addons.add(DDProxyAddon())
+            logging.info("Proxy server is listening on 127.0.0.1:8888")
             await m.run()
         except Exception as e:
-            logging.error(f"Error in DumpMaster: {e}")
-            m.shutdown()
+            if "Address already in use" in str(e):
+                logging.error("LỖI: Port 8888 đã bị sử dụng bởi ứng dụng khác!")
+            else:
+                logging.error(f"Error in DumpMaster: {e}")
+            if 'm' in locals():
+                m.shutdown()
 
     try:
         asyncio.run(run_proxy())
     except Exception as e:
-        logging.error(f"Asyncio run error: {e}")
+        if "Address already in use" not in str(e):
+            logging.error(f"Asyncio run error: {e}")
 
 if __name__ == "__main__":
     try:
